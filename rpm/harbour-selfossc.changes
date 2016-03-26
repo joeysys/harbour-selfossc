@@ -1,0 +1,14 @@
+# Rename this file as harbour-selfossc.changes to include changelog
+# entries in your RPM file.
+#
+# Add new changelog entries following the format below.
+# Add newest entries to the top of the list.
+# Separate entries from eachother with a blank line.
+
+# * date Author's Name <author's email> version-release
+# - Summary of changes
+
+* Sun Mar 27 2016 Joey Syou <joey@cirnoq.xyz> 0.1.0-1
+- First version
+
+
