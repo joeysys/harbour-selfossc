@@ -63,11 +63,18 @@ Page {
                     checkDup = false;
                 }
             }
+            // Twitter spout
             if ( item.author === '' && item.link.indexOf('twitter.com') > 0 ) {
                 var de = item.title.indexOf(':<br');
                 item.author = item.title.substr(0, de);
                 item.title = item.title.substr(de+7);
+                // Remove preview link in title
+                if (item.thumbnail) {
+                    var _idx = item.title.lastIndexOf(' <a href="https://t.co');
+                    item.title = item.title.substr(0, _idx); // no content => -1
+                }
             }
+
             currentModel.append(item);
             currentIds[type].push(item.id);
         }
@@ -181,17 +188,11 @@ Page {
                 }
             }
 
-            Separator {
-                id: separator
-                width: parent.width
-                color: Theme.secondaryColor
-            }
-
             Item {
                 id: itemContent
                 width: parent.width - Theme.paddingMedium * 2
                 height: childrenRect.height
-                anchors.top: separator.bottom
+                anchors.top: parent.top
                 anchors.topMargin: Theme.paddingMedium
                 anchors.horizontalCenter: parent.horizontalCenter
 
@@ -204,33 +205,48 @@ Page {
                     anchors.topMargin: Theme.paddingSmall
                     source: Selfoss.site + '/favicons/' + icon
                 }
+                Image {
+                    id: thumbIcon
+                    anchors.top: parent.top
+                    anchors.topMargin: Theme.paddingSmall
+                    anchors.right: parent.right
+                    height: Theme.iconSizeSmall
+                    width: height
+                    source: "image://theme/icon-m-image"
+                    visible: thumbnail
+                }
                 Label {
                     id: authorLabel
                     anchors.left: itemIcon.right
-                    anchors.top: parent.top
                     anchors.leftMargin: Theme.paddingMedium
-                    width: parent.width - itemIcon.width
+                    anchors.top: parent.top
+                    anchors.topMargin: Theme.paddingSmall / 2
+                    width: parent.width - itemIcon.width - thumbIcon.width - Theme.paddingMedium
                     height: Theme.fontSizeSmall
                     text: author
                     color: unread === "0" ? Theme.secondaryColor : Theme.primaryColor
                     font.bold: true
+                    font.pixelSize: Theme.fontSizeSmall
                     elide: TruncationMode.Elide
                 }
                 Label {
                     id: titleLabel
                     anchors.top: authorLabel.bottom
                     anchors.left: parent.left
-                    anchors.topMargin: Theme.paddingLarge
-                    anchors.bottomMargin: Theme.paddingLarge + Theme.paddingSmall
+                    anchors.topMargin: Theme.paddingMedium
                     width: parent.width
                     text: title
                     wrapMode: Text.WordWrap
                     textFormat: Text.StyledText
+                    font.pixelSize: Theme.fontSizeSmall
                     color: unread === "0" ? Theme.secondaryColor : Theme.primaryColor
                     linkColor: Theme.secondaryColor
                     onLinkActivated: {
                         // TODO confirm dialog
                         Qt.openUrlExternally(link);
+                    }
+                    Component.onCompleted: {
+                        if (!title) titleLabel.height = 0;
                     }
                 }
                 Label {
@@ -239,7 +255,7 @@ Page {
                     anchors.left: parent.left
                     height: Theme.fontSizeSmall
                     text: qsTr("via ") + sourcetitle
-                    font.pixelSize: Theme.fontSizeSmall
+                    font.pixelSize: Theme.fontSizeExtraSmall
                     color: Theme.secondaryColor
                 }
                 Label {
@@ -248,7 +264,7 @@ Page {
                     anchors.right: parent.right
                     height: Theme.fontSizeSmall
                     text: datetime
-                    font.pixelSize: Theme.fontSizeSmall
+                    font.pixelSize: Theme.fontSizeExtraSmall
                     color: Theme.secondaryColor
                 }
             }

@@ -88,13 +88,16 @@ Page {
 
                 Label {
                     id: authorLabel
+                    width: parent.width - itemIcon.width - Theme.paddingSmall
                     anchors {
                         top: parent.top
+                        topMargin: Theme.paddingSmall / 2
                         left: itemIcon.right
                         leftMargin: Theme.paddingSmall
                     }
                     text: item.author
                     elide: TruncationMode.Elide
+                    font.pixelSize: Theme.fontSizeSmall
                     color: Theme.secondaryHighlightColor
                 }
             }
@@ -110,9 +113,13 @@ Page {
                 text: item.title
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
+                font.pixelSize: Theme.fontSizeSmall
                 linkColor: Theme.secondaryColor
                 onLinkActivated: {
                     Qt.openUrlExternally(link);
+                }
+                Component.onCompleted: {
+                    if (!item.title) titleLabel.height = 0;
                 }
             }
 
@@ -125,6 +132,7 @@ Page {
                     left: parent.left
                     topMargin: Theme.paddingSmall
                 }
+                visible: item.content
             }
 
             // TODO image size
@@ -139,9 +147,16 @@ Page {
                 text: Selfoss.decodeCharCode(item.content)
                 wrapMode: Text.WordWrap
                 textFormat: Text.StyledText
+                font.pixelSize: Theme.fontSizeSmall
                 linkColor: Theme.secondaryColor
                 onLinkActivated: {
                     Qt.openUrlExternally(link);
+                }
+                Component.onCompleted: {
+                    if (!item.content) {
+                        contentLabel.height = 0;
+                        contentLabel.anchors.topMargin = 0;
+                    }
                 }
             }
 
@@ -161,7 +176,7 @@ Page {
                         left: parent.left
                     }
                     color: Theme.secondaryColor
-                    font.pixelSize: Theme.fontSizeSmall
+                    font.pixelSize: Theme.fontSizeExtraSmall
                     text: qsTr("via ") + item.sourcetitle
                 }
 
@@ -173,7 +188,7 @@ Page {
                     }
                     horizontalAlignment: Text.AlignRight
                     color: Theme.secondaryColor
-                    font.pixelSize: Theme.fontSizeSmall
+                    font.pixelSize: Theme.fontSizeExtraSmall
                     text: item.datetime
                 }
             }
