@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import '../js/selfoss.js' as Selfoss
@@ -193,36 +193,14 @@ Page {
                 }
             }
 
-            Item {
-                id: thumbWrapper
-                width: parent.width
-                height: childrenRect.height
+            Loader {
+                id: thumbLoader
                 anchors {
                     top: infoBar.bottom
                     topMargin: Theme.paddingLarge
                 }
-
-                Image {
-                    id: thumbImage
-                    width: sourceSize.width < parent.width ? sourceSize.width : parent.width
-                    height: width * sourceSize.height / sourceSize.width
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    source: item.thumbnail ? Selfoss.site + '/thumbnails/' + item.thumbnail : ''
-                    fillMode: Image.Pad
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            console.log(thumbImage.sourceSize)
-                        }
-                    }
-                }
-
-                BusyIndicator {
-                    anchors.top: thumbImage.bottom
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    running: item.thumbnail !== '' && thumbImage.status === Image.Loading
-                    size: BusyIndicatorSize.Large
-                }
+                width: parent.width
+                height: childrenRect.height
             }
         }
     }
@@ -241,6 +219,12 @@ Page {
                     item.unread = "0";
                     statsUnread -= 1;
                 }
+            });
+        }
+        if (item.thumbnail) {
+            thumbLoader.setSource('ThumbnailComponent.qml', {
+                'thumbnail': item.thumbnail,
+                'site': Selfoss.site
             });
         }
     }
