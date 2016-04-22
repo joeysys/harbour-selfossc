@@ -71,6 +71,33 @@
     </message>
 </context>
 <context>
+    <name>ListItemComponent</name>
+    <message>
+        <source>Star</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unstar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark as unread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark as read</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>via </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainPage</name>
     <message>
         <source>Settings</source>
@@ -105,27 +132,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Star</source>
+        <source>Show thumbnails</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unstar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark as unread</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mark as read</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open in Browser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>via </source>
+        <source>Hide thumbnails</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

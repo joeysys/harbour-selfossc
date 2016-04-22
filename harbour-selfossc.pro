@@ -22,6 +22,8 @@ OTHER_FILES += qml/harbour-selfossc.qml \
     qml/pages/MainPage.qml \
     qml/pages/SettingsPage.qml \
     qml/pages/WebViewPage.qml \
+    qml/pages/ListItemComponent.qml \
+    qml/pages/ThumbnailComponent.qml \
     qml/cover/CoverPage.qml \
     qml/js/selfoss.js \
     qml/js/storage.js \
