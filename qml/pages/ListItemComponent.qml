@@ -19,7 +19,7 @@ ListItem {
                 var stat = (starred === "0") ? 'starr' : 'unstarr';
                 Selfoss.toggleStat(stat, id, function(resp) {
                     if (resp.success) {
-                        starred = (starred === "0" ? "1" : "0")
+                        item.starred = (starred === "0" ? "1" : "0");
                     }
                 });
             }
@@ -31,10 +31,10 @@ ListItem {
                 Selfoss.toggleStat(stat, id, function(resp) {
                     if (resp.success) {
                         if (unread === "0") {
-                            unread = "1";
+                            item.unread = "1";
                             statsUnread += 1;
                         } else {
-                            unread = "0";
+                            item.unread = "0";
                             statsUnread -= 1;
                         }
                     }
@@ -85,7 +85,18 @@ ListItem {
             width: parent.width - itemIcon.width - thumbIcon.width - Theme.paddingMedium
             height: Theme.fontSizeSmall
             text: author
-            color: unread === "0" ? Theme.secondaryColor : Theme.primaryColor
+            color: {
+                switch (unread + starred) {
+                    case "00":
+                        return Theme.secondaryColor;
+                    case "01":
+                        return Theme.secondaryHighlightColor;
+                    case "10":
+                        return Theme.primaryColor;
+                    case "11":
+                        return Theme.highlightColor;
+                }
+            }
             font.bold: true
             font.pixelSize: Theme.fontSizeSmall
             elide: TruncationMode.Elide
@@ -100,8 +111,8 @@ ListItem {
             wrapMode: Text.WordWrap
             textFormat: Text.StyledText
             font.pixelSize: Theme.fontSizeSmall
-            color: unread === "0" ? Theme.secondaryColor : Theme.primaryColor
-            linkColor: Theme.secondaryColor
+            color: authorLabel.color
+            linkColor: starred === "0" ? Theme.secondaryColor : Theme.secondaryHighlightColor
             onLinkActivated: {
                 // TODO confirm dialog
                 Qt.openUrlExternally(link);

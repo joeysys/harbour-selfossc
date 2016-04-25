@@ -158,6 +158,7 @@ Page {
 
         delegate: ListItemComponent {
             _showThumb: showThumbs
+            item: currentModel.get(index)
         }
 
         onAtYEndChanged: {
