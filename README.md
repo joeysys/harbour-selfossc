@@ -10,9 +10,4 @@ Features:
   - Star/unstar items
   - Open link in webview or browser
 
-Known issues:
-
-  - Images do not resize to fit screen
-  - Filters reset
-
 
