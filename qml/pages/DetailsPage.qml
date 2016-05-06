@@ -135,27 +135,24 @@ Page {
                 visible: item.content
             }
 
-            // TODO image size
-            Label {
+            RescalingRichText {
                 id: contentLabel
                 anchors {
                     top: separator.bottom
                     left: parent.left
-                    topMargin: Theme.paddingLarge
+                    topMargin: Theme.paddingMedium
                 }
                 width: parent.width
                 text: Selfoss.decodeCharCode(item.content)
-                wrapMode: Text.WordWrap
-                textFormat: Text.StyledText
-                font.pixelSize: Theme.fontSizeSmall
-                linkColor: Theme.secondaryColor
+                fontSize: Theme.fontSizeSmall
+                color: Theme.primaryColor
                 onLinkActivated: {
                     Qt.openUrlExternally(link);
                 }
                 Component.onCompleted: {
                     if (!item.content) {
                         contentLabel.height = 0;
-                        contentLabel.anchors.topMargin = 0;
+                        contentLabel.anchors.topMargin = -Theme.paddingMedium;
                     }
                 }
             }
@@ -166,6 +163,7 @@ Page {
                 height: childrenRect.height
                 anchors {
                     top: contentLabel.bottom
+                    topMargin: Theme.paddingSmall
                     left: parent.left
                 }
 
@@ -203,6 +201,7 @@ Page {
                 height: childrenRect.height
             }
         }
+        VerticalScrollDecorator {}
     }
 
 

@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Fri May 06 2016 Joey Syou <joey@cirnoq.xyz> 0.2.2-1
+- Fix image size on detail page
+
 * Mon Apr 25 2016 Joey Syou <joey@cirnoq.xyz> 0.2.1-1
 - Fix item status
 

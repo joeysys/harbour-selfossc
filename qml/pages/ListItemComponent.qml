@@ -54,7 +54,7 @@ ListItem {
         width: parent.width - Theme.paddingMedium * 2
         height: childrenRect.height
         anchors.top: parent.top
-        anchors.topMargin: Theme.paddingMedium
+        anchors.topMargin: Theme.paddingMedium * 1.5
         anchors.horizontalCenter: parent.horizontalCenter
 
         Image {
