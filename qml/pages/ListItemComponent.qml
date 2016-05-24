@@ -135,7 +135,7 @@ ListItem {
             anchors.top: titleLabel.bottom
             anchors.right: parent.right
             height: Theme.fontSizeSmall
-            text: datetime
+            text: Selfoss.changeZone(datetime, true)
             font.pixelSize: Theme.fontSizeExtraSmall
             color: Theme.secondaryColor
         }

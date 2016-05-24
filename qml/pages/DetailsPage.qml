@@ -187,7 +187,7 @@ Page {
                     horizontalAlignment: Text.AlignRight
                     color: Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeExtraSmall
-                    text: item.datetime
+                    text: Selfoss.changeZone(item.datetime)
                 }
             }
 

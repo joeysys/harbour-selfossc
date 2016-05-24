@@ -6,11 +6,13 @@
 var site;
 var user;
 var passwd;
+var timezone;
 
 function readSettings() {
     site = Storage.readSetting('site');
     user = Storage.readSetting('user');
     passwd = Storage.readSetting('passwd');
+    timezone = parseInt(Storage.readSetting('timezone') || 0);
 }
 
 function request(method, path, params, callback) {
@@ -22,9 +24,7 @@ function request(method, path, params, callback) {
     var xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
-        //console.log('http ready: ' + xhr.readyState);
         if (xhr.readyState === 4) {
-            //console.log('http status: ' + xhr.status);
             if (xhr.status === 200) {
                 var resp = JSON.parse(xhr.responseText);
                 typeof(callback) === 'function' && callback(resp);
@@ -114,4 +114,24 @@ function decodeCharCode(str) {
             var pp=p1.substr(2, p1.length-3);
             return String.fromCharCode(pp);
         });
+}
+
+function changeZone(time, shorter) {
+    var date = new Date(time);
+    var offset = timezone + date.getTimezoneOffset() / 60;
+    date.setTime((date.getTime() - offset*3600*1000));
+
+    if (shorter) {
+        var dh = Date.now() - date.getTime();
+        if (dh < 2*3600*1000) {
+            if (dh < 2*60*1000) {
+                if (dh < 2*1000) {
+                    return qsTr("just now")
+                }
+                return (dh / 1000 | 0) + qsTr(" seconds ago");
+            }
+            return (dh / 60000 | 0) + qsTr(" minutes ago");
+        }
+    }
+    return date.toString().replace(/ GMT\+.*/, '');
 }

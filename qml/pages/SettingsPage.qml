@@ -10,6 +10,7 @@ Page {
     property string site: Storage.readSetting('site')
     property string user: Storage.readSetting('user')
     property string passwd: Storage.readSetting('passwd')
+    property string timezone: Storage.readSetting('timezone')
 
     function saveSettings() {
         if (site !== serverField.text) {
@@ -22,6 +23,10 @@ Page {
         }
         if (passwdField.text && passwd !== passwdField.text) {
             Storage.writeSetting('passwd', passwdField.text);
+            forceReload = true;
+        }
+        if (timezone !== timezoneField.text) {
+            Storage.writeSetting('timezone', timezoneField.text);
             forceReload = true;
         }
         Selfoss.readSettings();
@@ -56,15 +61,16 @@ Page {
                 id: userField
                 width: parent.width - Theme.paddingLarge
                 text: user
-                label: qsTr("Username (Optional)")
+                label: qsTr("Username (optional)")
                 placeholderText: label
+                inputMethodHints: Qt.ImhNoAutoUppercase
             }
 
             TextField {
                 id: passwdField
                 width: parent.width - Theme.paddingLarge
                 echoMode: TextInput.PasswordEchoOnEdit
-                label: qsTr("Password (Optional)")
+                label: qsTr("Password (optional)")
                 placeholderText: passwd ? "Password (unchanged)" : label
             }
 
@@ -75,6 +81,15 @@ Page {
                     debug = checked;
                 }
                 visible: false
+            }
+
+            TextField {
+                id: timezoneField
+                width: parent.width - Theme.paddingLarge
+                label: qsTr("Server timezone (optional)")
+                text: timezone
+                placeholderText: label
+                inputMethodHints: Qt.ImhDigitsOnly
             }
         }
     }
