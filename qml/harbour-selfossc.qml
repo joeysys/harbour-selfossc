@@ -3,12 +3,15 @@ import Sailfish.Silica 1.0
 import "pages"
 
 import 'js/selfoss.js' as Selfoss
+import "js/storage.js" as Storage
 
 ApplicationWindow
 {
     property bool requestLock: false
     property bool forceReload: false
     property int pageItems: 20
+
+    property bool showThumbs: Storage.readSetting('thumb');
     property bool debug: false
 
     property string type: 'unread'

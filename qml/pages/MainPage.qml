@@ -13,7 +13,17 @@ Page {
     property int currentPage: 0
     property var currentIds: JSON.parse('{ "unread": [], "newest": [], "starred": [] }')
 
-    property bool showThumbs: false
+    property string _showText: qsTr("Show thumbnails")
+    property string _hideText: qsTr("Hide thumbnails")
+
+    function toggleThumbs(thumb) {
+        if (typeof(thumb) === 'boolean') {
+            showThumbs = thumb;
+        } else {
+            showThumbs = !showThumbs;
+        }
+        thumbMenu.text = showThumbs ? _hideText : _showText;
+    }
 
     function setSource() {
         tag = '';
@@ -94,12 +104,9 @@ Page {
                 }
             }
             MenuItem {
-                property string _showText: qsTr("Show thumbnails")
-                text: _showText
-                onClicked: {
-                    showThumbs = !showThumbs;
-                    text = showThumbs ? qsTr("Hide thumbnails") : _showText;
-                }
+                id: thumbMenu
+                text: showThumbs ? _hideText : _showText;
+                onClicked: toggleThumbs()
             }
             MenuItem {
                 text: qsTr("Refresh")
@@ -195,6 +202,7 @@ Page {
 
         // for cover action
         exportFn('reload', reloadItems);
+        exportFn('toggleThumbs', toggleThumbs);
     }
 }
 

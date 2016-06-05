@@ -11,6 +11,7 @@ Page {
     property string user: Storage.readSetting('user')
     property string passwd: Storage.readSetting('passwd')
     property string timezone: Storage.readSetting('timezone')
+    property bool _showThumbs: Storage.readSetting('thumb')
 
     function saveSettings() {
         if (site !== serverField.text) {
@@ -28,6 +29,10 @@ Page {
         if (timezone !== timezoneField.text) {
             Storage.writeSetting('timezone', timezoneField.text);
             forceReload = true;
+        }
+        if (thumbSwitch.checked !== _showThumbs) {
+            exportFns.toggleThumbs(thumbSwitch.checked);
+            Storage.writeSetting('thumb', thumbSwitch.checked);
         }
         Selfoss.readSettings();
     }
@@ -74,15 +79,6 @@ Page {
                 placeholderText: passwd ? "Password (unchanged)" : label
             }
 
-            TextSwitch {
-                text: qsTr("Enable debugging")
-                checked: false
-                onCheckedChanged: {
-                    debug = checked;
-                }
-                visible: false
-            }
-
             TextField {
                 id: timezoneField
                 width: parent.width - Theme.paddingLarge
@@ -90,6 +86,25 @@ Page {
                 text: timezone
                 placeholderText: label
                 inputMethodHints: Qt.ImhDigitsOnly
+            }
+
+            SectionHeader {
+                text: qsTr("Behaviour")
+            }
+
+            TextSwitch {
+                id: thumbSwitch
+                text: qsTr("Always show thumbnails")
+                checked: _showThumbs
+            }
+
+            TextSwitch {
+                text: qsTr("Enable debugging")
+                checked: false
+                onCheckedChanged: {
+                    debug = checked;
+                }
+                visible: false
             }
         }
     }
