@@ -8,6 +8,25 @@ Page {
 
     property var item
 
+    function updateTagUnread(item, delta) {
+        if (item && item.tags && typeof(delta) === 'number') {
+            var tags = item.tags.split(',');
+            var tag, tmpItem;
+            for (var j in tags) {
+                tag = tags[j];
+                for (var i=0; i < tagsModel.count; i++) {
+                    tmpItem = tagsModel.get(i);
+                    if (tmpItem.tag === tag) {
+                        tagsModel.set(i, {
+                            "unread": (parseInt(tmpItem.unread) + delta) + ''
+                        });
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     SilicaFlickable {
         anchors.fill: parent
         contentHeight: pageHeader.height + column.height + Theme.paddingLarge
@@ -26,9 +45,11 @@ Page {
                             if (item.unread === "0") {
                                 item.unread = "1";
                                 statsUnread += 1;
+                                updateTagUnread(item, 1);
                             } else {
                                 item.unread = "0";
                                 statsUnread -= 1;
+                                updateTagUnread(item, -1);
                             }
                         }
                     });
@@ -217,6 +238,7 @@ Page {
                 if (resp.success) {
                     item.unread = "0";
                     statsUnread -= 1;
+                    updateTagUnread(item, -1);
                 }
             });
         }

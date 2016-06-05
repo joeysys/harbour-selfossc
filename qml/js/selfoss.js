@@ -75,7 +75,10 @@ function listItems(type, page, callback, tag, sourceId) {
 }
 
 function markAllRead(ids, callback) {
-    if (!Array.isArray(ids) || ids.length < 1) { return; }
+    if (!Array.isArray(ids) || ids.length < 1) {
+        callback();
+        return;
+    }
     var data = 'ids%5B%5D=' + ids[0];
     for (var i=1; i<ids.length; i++) {
         data += '&ids%5B%5D=' + ids[i];

@@ -71,9 +71,9 @@ Dialog {
                     MenuItem { text: qsTr("All") }
                     Repeater {
                         id: tagsRepeater
-                        model: tagsModel
+                        model: tagList
                         delegate: MenuItem {
-                            text: tag
+                            text: modelData.tag
                         }
                     }
                 }

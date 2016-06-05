@@ -66,7 +66,9 @@ CoverBackground {
         CoverAction {
             iconSource: "image://theme/icon-cover-refresh"
             onTriggered: {
-                updateStats();
+                if (typeof(exportFns['reload']) === 'function') {
+                    exportFns['reload']();
+                }
             }
         }
     }

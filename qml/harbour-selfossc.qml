@@ -16,6 +16,8 @@ ApplicationWindow
     property int sourceIndex: 0
     property int statsUnread: 0
     property var currentModel
+    property var exportFns
+    property var tagList: []
 
     ListModel { id: unreadModel }
     ListModel { id: newestModel }
@@ -38,7 +40,8 @@ ApplicationWindow
     function updateStats() {
         Selfoss.listTags(function(tags) {
             if (debug) console.log('add tags', tags.length);
-            var orderedTags = tags.sort(function(a, b) {
+            tagList = tags;
+            var orderedTags = tags.slice().sort(function(a, b) {
                 return b.unread - a.unread;
             });
             tagsModel.clear();
@@ -58,6 +61,11 @@ ApplicationWindow
             if (debug) console.log(JSON.stringify(resp));
             statsUnread = resp.unread - 0;
         });
+    }
+
+    function exportFn(name, fn) {
+        if (!exportFns) { exportFns = {}; }
+        exportFns[name] = fn;
     }
 
 }

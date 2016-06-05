@@ -21,7 +21,7 @@ Page {
         if (sourceIndex > 0) {
             sourceId = sourceModel.get(sourceIndex-1).id;
         } else if (tagIndex > 0) {
-            tag = tagsModel.get(tagIndex-1).tag;
+            tag = tagList[tagIndex-1].tag;
         }
     }
 
@@ -44,6 +44,7 @@ Page {
         setSource();
         if (debug) console.log('reloading items:', type, tag, sourceId);
         Selfoss.listItems(type, currentPage, addToModel, tag, sourceId);
+        updateStats();
     }
 
     function addToModel(items) {
@@ -118,9 +119,8 @@ Page {
                     requestLock = true;
                     Selfoss.markAllRead(currentIds[type], function(resp) {
                         requestLock = false;
-                        if (resp.success) {
+                        if (resp && resp.success) {
                             reloadItems();
-                            updateStats();
                         } else {
                             console.warn('Mark all as read failed!');
                         }
@@ -191,13 +191,10 @@ Page {
     Component.onCompleted: {
         Selfoss.readSettings();
         if (!currentModel) currentModel = unreadModel;
-        if (Selfoss.site) {
-            requestLock = true;
-            currentPage = 0;
-            if (debug) console.log('get items', type);
-            Selfoss.listItems(type, currentPage, addToModel);
-            updateStats();
-        }
+        reloadItems();
+
+        // for cover action
+        exportFn('reload', reloadItems);
     }
 }
 
