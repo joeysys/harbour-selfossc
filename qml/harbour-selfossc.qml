@@ -38,9 +38,12 @@ ApplicationWindow
     function updateStats() {
         Selfoss.listTags(function(tags) {
             if (debug) console.log('add tags', tags.length);
+            var orderedTags = tags.sort(function(a, b) {
+                return b.unread - a.unread;
+            });
             tagsModel.clear();
-            for (var i in tags) {
-                tagsModel.append(tags[i]);
+            for (var i in orderedTags) {
+                tagsModel.append(orderedTags[i]);
             }
         });
         Selfoss.listSources(function(srcs) {

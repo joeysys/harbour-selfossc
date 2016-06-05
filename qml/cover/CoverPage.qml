@@ -41,6 +41,7 @@ CoverBackground {
             delegate: Item {
                 width: column.width
                 height: childrenRect.height
+                opacity: index > 2 ? ( 6 - index ) * .25 : 1.0
                 Label {
                     id: tagLabel
                     anchors.left: parent.left
