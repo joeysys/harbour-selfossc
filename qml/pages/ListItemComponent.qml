@@ -25,20 +25,39 @@ ListItem {
             }
         }
         MenuItem  {
-            text: unread === "0" ? qsTr("Mark as unread") : qsTr("Mark as read")
+            text: unread === "0" ? qsTr("Mark as unread") : qsTr("Mark above as read")
             onClicked: {
-                var stat = (unread === "0") ? 'unread' : 'read';
-                Selfoss.toggleStat(stat, id, function(resp) {
-                    if (resp.success) {
-                        if (unread === "0") {
+                if (unread === '0') {
+                    Selfoss.toggleStat('unread', id, function(resp) {
+                        if (resp.success) {
                             item.unread = "1";
                             statsUnread += 1;
                         } else {
-                            item.unread = "0";
-                            statsUnread -= 1;
+                            console.warn('Toggle unread failed!')
+                        }
+                    });
+                } else {
+                    var aboveIds = [];
+                    var thisIdx = -1;
+                    for (var i=0; i<currentIds[type].length; i++) {
+                        if (currentIds[type][i] == item.id) {
+                            thisIdx = i;
+                            break;
                         }
                     }
-                });
+                    if (thisIdx > -1) {
+                        aboveIds = currentIds[type].slice(0, thisIdx + 1);
+                    }
+                    requestLock = true;
+                    Selfoss.markAllRead(aboveIds, function(resp) {
+                        requestLock = false;
+                        if (resp && resp.success) {
+                            reloadItems();
+                        } else {
+                            console.warn('Mark above as read failed!');
+                        }
+                    });
+                }
             }
         }
         MenuItem {
