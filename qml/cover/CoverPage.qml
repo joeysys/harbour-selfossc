@@ -15,8 +15,19 @@ CoverBackground {
         anchors.topMargin: Theme.paddingLarge
         anchors.left: parent.left
         anchors.leftMargin: Theme.paddingMedium
-        text: statsUnread + ''
+        text: requestLock ? '...' : (statsUnread > 999 ? '999' : statsUnread + '')
         font.pixelSize: Theme.fontSizeHuge
+    }
+
+    Label {
+        id: plusLabel
+        anchors.top: totalNum.top
+        anchors.topMargin: Theme.paddingMedium
+        anchors.left: totalNum.right
+        anchors.leftMargin: Theme.paddingSmall
+        text: '+'
+        visible: !requestLock && statsUnread > 999
+        font.pixelSize: Theme.fontSizeSmall
     }
 
     Label {
