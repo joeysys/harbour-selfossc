@@ -85,15 +85,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mark as read</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Open in Browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>via </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark above as read</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -155,15 +155,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Username (Optional)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password (Optional)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enable debugging</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server timezone (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always show thumbnails</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scale images in content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version 0.3.0</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -186,6 +206,21 @@
     <name>harbour-selfossc</name>
     <message>
         <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>selfoss</name>
+    <message>
+        <source>just now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> seconds ago</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> minutes ago</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
