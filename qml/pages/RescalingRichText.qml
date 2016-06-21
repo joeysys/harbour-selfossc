@@ -16,6 +16,7 @@ Item {
     property bool showSource: false
 
     property real scaling: 1
+    property bool noScaling: false
 
     property string _style: "<style>" +
                             "a:link { color:" + Theme.secondaryColor + " }" +
@@ -84,6 +85,7 @@ Item {
         interval: 100
 
         onTriggered: {
+            if (noScaling) return;
             var contentWidth = Math.floor(layoutLabel.contentWidth);
             scaling = Math.min(1, parent.width / (layoutLabel.contentWidth + 0.0));
             console.log("scaling: " + scaling);

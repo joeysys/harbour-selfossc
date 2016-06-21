@@ -11,8 +11,7 @@ ApplicationWindow
     property bool forceReload: false
     property int pageItems: 20
 
-    property bool showThumbs: Storage.readSetting('thumb');
-    property bool debug: false
+    property var settings: readLocalSettings()
 
     property string type: 'unread'
     property int tagIndex: 0
@@ -42,7 +41,7 @@ ApplicationWindow
 
     function updateStats() {
         Selfoss.listTags(function(tags) {
-            if (debug) console.log('add tags', tags.length);
+            if (settings.debug) console.log('add tags', tags.length);
             tagList = tags;
             var orderedTags = tags.slice().sort(function(a, b) {
                 return b.unread - a.unread;
@@ -53,7 +52,7 @@ ApplicationWindow
             }
         });
         Selfoss.listSources(function(srcs) {
-            if (debug) console.log('add srcs', srcs.length);
+            if (settings.debug) console.log('add srcs', srcs.length);
             sources = srcs;
             sourceModel.clear();
             for (var i in srcs) {
@@ -61,7 +60,7 @@ ApplicationWindow
             }
         });
         Selfoss.getStats(function(resp) {
-            if (debug) console.log(JSON.stringify(resp));
+            if (settings.debug) console.log(JSON.stringify(resp));
             statsUnread = resp.unread - 0;
         });
     }
@@ -71,4 +70,11 @@ ApplicationWindow
         exportFns[name] = fn;
     }
 
+    function readLocalSettings() {
+        var _settings = {};
+        _settings.debug = Storage.readSetting('debug');
+        _settings.showThumbs = Storage.readSetting('thumb');
+        _settings.noScaling = Storage.readSetting('noScaling');
+        return _settings;
+    }
 }

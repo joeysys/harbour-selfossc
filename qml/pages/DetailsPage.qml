@@ -167,6 +167,7 @@ Page {
                 text: Selfoss.decodeCharCode(item.content)
                 fontSize: Theme.fontSizeSmall
                 color: Theme.primaryColor
+                noScaling: settings.noScaling
                 onLinkActivated: {
                     Qt.openUrlExternally(link);
                 }

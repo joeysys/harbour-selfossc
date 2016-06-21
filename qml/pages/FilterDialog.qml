@@ -79,7 +79,7 @@ Dialog {
                     }
                 }
                 onValueChanged: {
-                    if (debug) console.log('tag changed', currentIndex, value)
+                    if (settings.debug) console.log('tag changed', currentIndex, value)
                     // FIXME
                     // This will reset sourceCombs* index to 0
                     // How to set these to sourceIndex?
@@ -89,7 +89,7 @@ Dialog {
                             sourceModel.append(sources[i]);
                         }
                     }
-                    if (debug) console.log('model count', sourceModel.count)
+                    if (settings.debug) console.log('model count', sourceModel.count)
                     if (sourceModel.count > 6) {
                         sourceCombo1.currentIndex = 0;
                     } else {
@@ -139,11 +139,11 @@ Dialog {
 
     onAccepted: {
         if (sourceModel.count > 6) {
-            if (debug) console.log('src index 1:', sourceCombo1.currentIndex, sourceIndex);
+            if (settings.debug) console.log('src index 1:', sourceCombo1.currentIndex, sourceIndex);
             if (sourceCombo1.currentIndex !== sourceIndex) {
                 sourceIndex = sourceCombo1.currentIndex;
                 needReload = true;
-                if (debug) console.log('Change src index 1 to:', sourceIndex);
+                if (settings.debug) console.log('Change src index 1 to:', sourceIndex);
             }
             if (sourceCombo1.currentIndex > 0) {
                 subtitle = sourceCombo1.value;
@@ -151,11 +151,11 @@ Dialog {
                 subtitle = tagsCombo.value;
             }
         } else {
-            if (debug) console.log('src index 2:', sourceCombo2.currentIndex, sourceIndex);
+            if (settings.debug) console.log('src index 2:', sourceCombo2.currentIndex, sourceIndex);
             if (sourceCombo2.currentIndex !== sourceIndex) {
                 sourceIndex = sourceCombo2.currentIndex;
                 needReload = true;
-                if (debug) console.log('Change src index 2 to:', sourceIndex);
+                if (settings.debug) console.log('Change src index 2 to:', sourceIndex);
             }
             if (sourceCombo2.currentIndex > 0) {
                 subtitle = sourceCombo2.value;
@@ -163,17 +163,17 @@ Dialog {
                 subtitle = tagsCombo.value;
             }
         }
-        if (debug) console.log('Tag index:', tagsCombo.currentIndex, tagIndex)
+        if (settings.debug) console.log('Tag index:', tagsCombo.currentIndex, tagIndex)
         if (tagsCombo.currentIndex !== tagIndex) {
             tagIndex = tagsCombo.currentIndex;
             needReload = true;
-            if (debug) console.log('Change tag index to:', tagIndex);
+            if (settings.debug) console.log('Change tag index to:', tagIndex);
         }
 
-        if (debug) console.log('Accept:', checkedType, tagIndex, sourceIndex);
+        if (settings.debug) console.log('Accept:', checkedType, tagIndex, sourceIndex);
         if (type !== checkedType) {
             type = checkedType;
-            if (debug) console.log('Change type:', type);
+            if (settings.debug) console.log('Change type:', type);
             switch (type) {
                 case 'newest':
                     currentModel = newestModel;
@@ -189,7 +189,7 @@ Dialog {
                 needReload = true;
             }
         }
-        if (debug) console.log('need reload:', needReload);
+        if (settings.debug) console.log('need reload:', needReload);
         if (needReload) {
             pageStack.previousPage().reloadItems();
         }

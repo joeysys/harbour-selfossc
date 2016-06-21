@@ -12,6 +12,7 @@ Page {
     property string passwd: Storage.readSetting('passwd')
     property string timezone: Storage.readSetting('timezone')
     property bool _showThumbs: Storage.readSetting('thumb')
+    property bool _noScaling: Storage.readSetting('noScaling')
 
     function saveSettings() {
         if (site !== serverField.text) {
@@ -34,7 +35,11 @@ Page {
             exportFns.toggleThumbs(thumbSwitch.checked);
             Storage.writeSetting('thumb', thumbSwitch.checked);
         }
+        if (scalingSwitch.checked == _noScaling) {
+            Storage.writeSetting('noScaling', !scalingSwitch.checked);
+        }
         Selfoss.readSettings();
+        settings = readLocalSettings();
     }
 
     SilicaFlickable {
@@ -99,6 +104,12 @@ Page {
             }
 
             TextSwitch {
+                id: scalingSwitch
+                text: qsTr("Scale images in content")
+                checked: !_noScaling
+            }
+
+            TextSwitch {
                 text: qsTr("Enable debugging")
                 checked: false
                 onCheckedChanged: {
@@ -106,6 +117,11 @@ Page {
                 }
                 visible: false
             }
+
+            SectionHeader {
+                text: qsTr("Version 0.3.0")
+            }
+
         }
     }
 

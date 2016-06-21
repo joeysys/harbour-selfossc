@@ -13,16 +13,17 @@ Page {
     property int currentPage: 0
     property var currentIds: JSON.parse('{ "unread": [], "newest": [], "starred": [] }')
 
+    property bool _showThumbs: settings.showThumbs
     property string _showText: qsTr("Show thumbnails")
     property string _hideText: qsTr("Hide thumbnails")
 
     function toggleThumbs(thumb) {
         if (typeof(thumb) === 'boolean') {
-            showThumbs = thumb;
+            _showThumbs = thumb;
         } else {
-            showThumbs = !showThumbs;
+            _showThumbs = !_showThumbs;
         }
-        thumbMenu.text = showThumbs ? _hideText : _showText;
+        thumbMenu.text = _showThumbs ? _hideText : _showText;
     }
 
     function setSource() {
@@ -52,7 +53,7 @@ Page {
         currentPage = 0;
         currentIds[type] = [];
         setSource();
-        if (debug) console.log('reloading items:', type, tag, sourceId);
+        if (settings.debug) console.log('reloading items:', type, tag, sourceId);
         Selfoss.listItems(type, currentPage, addToModel, tag, sourceId);
         updateStats();
     }
@@ -65,7 +66,7 @@ Page {
         }
         if (items.length < pageItems) { allLoaded = true; }
         var checkDup = true;
-        if (debug) console.log('adding to model', items.length);
+        if (settings.debug) console.log('adding to model', items.length);
         for ( var i in items ) {
             var item = items[i];
             if (checkDup) {
@@ -105,7 +106,7 @@ Page {
             }
             MenuItem {
                 id: thumbMenu
-                text: showThumbs ? _hideText : _showText;
+                text: _showThumbs ? _hideText : _showText;
                 onClicked: toggleThumbs()
             }
             MenuItem {
@@ -164,16 +165,16 @@ Page {
         model: currentModel
 
         delegate: ListItemComponent {
-            _showThumb: showThumbs
+            _showThumb: _showThumbs
             item: currentModel.get(index)
         }
 
         onAtYEndChanged: {
             if (mainListView.atYEnd) {
-                if (debug) console.log('at y end');
+                if (settings.debug) console.log('at y end');
                 if ( !requestLock && status === PageStatus.Active &&
                         currentModel && currentModel.count > 0 && !allLoaded) {
-                    if (debug) console.log('loading more');
+                    if (settings.debug) console.log('loading more');
                     requestLock = true;
                     currentPage += 1;
                     Selfoss.listItems(type, currentPage, addToModel, tag, sourceId);
