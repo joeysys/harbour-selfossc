@@ -15,48 +15,15 @@ ListItem {
     menu: ContextMenu {
         MenuItem {
             text: starred === "0" ? qsTr("Star") : qsTr("Unstar")
-            onClicked: {
-                var stat = (starred === "0") ? 'starr' : 'unstarr';
-                Selfoss.toggleStat(stat, id, function(resp) {
-                    if (resp.success) {
-                        item.starred = (starred === "0" ? "1" : "0");
-                    }
-                });
-            }
+            onClicked: toggleStarred(starred === "0" ? 'starr' : 'unstarr')
         }
         MenuItem  {
             text: unread === "0" ? qsTr("Mark as unread") : qsTr("Mark above as read")
             onClicked: {
                 if (unread === '0') {
-                    Selfoss.toggleStat('unread', id, function(resp) {
-                        if (resp.success) {
-                            item.unread = "1";
-                            statsUnread += 1;
-                        } else {
-                            console.warn('Toggle unread failed!')
-                        }
-                    });
+                    toggleRead('unread');
                 } else {
-                    var aboveIds = [];
-                    var thisIdx = -1;
-                    for (var i=0; i<currentIds[type].length; i++) {
-                        if (currentIds[type][i] == item.id) {
-                            thisIdx = i;
-                            break;
-                        }
-                    }
-                    if (thisIdx > -1) {
-                        aboveIds = currentIds[type].slice(0, thisIdx + 1);
-                    }
-                    requestLock = true;
-                    Selfoss.markAllRead(aboveIds, function(resp) {
-                        requestLock = false;
-                        if (resp && resp.success) {
-                            reloadItems();
-                        } else {
-                            console.warn('Mark above as read failed!');
-                        }
-                    });
+                    markAboveRead();
                 }
             }
         }
@@ -64,6 +31,7 @@ ListItem {
             text: qsTr("Open in Browser")
             onClicked: {
                 Qt.openUrlExternally(link);
+                toggleRead('read');
             }
         }
     }
@@ -188,5 +156,54 @@ ListItem {
         } else {
             thumbLoader.source = '';
         }
+    }
+
+    function toggleStarred(stat) {
+        Selfoss.toggleStat(stat, item.id, function(resp) {
+            if (resp.success) {
+                item.starred = (starred === "0" ? "1" : "0");
+            } else {
+                console.warn('Toggle starred failed!', stat, item.id);
+            }
+        });
+    }
+
+    function toggleRead(stat) {
+        Selfoss.toggleStat(stat, item.id, function(resp) {
+            if (resp.success) {
+                if (stat === 'read') {
+                    item.unread = '0';
+                    statsUnread -= 1;
+                } else {
+                    item.unread = '1';
+                    statsUnread += 1;
+                }
+            } else {
+                console.warn('Toggle unread failed!', stat, item.id);
+            }
+        });
+    }
+
+    function markAboveRead() {
+        var aboveIds = [];
+        var thisIdx = -1;
+        for (var i=0; i<currentIds[type].length; i++) {
+            if (currentIds[type][i] == item.id) {
+                thisIdx = i;
+                break;
+            }
+        }
+        if (thisIdx > -1) {
+            aboveIds = currentIds[type].slice(0, thisIdx + 1);
+        }
+        requestLock = true;
+        Selfoss.markAllRead(aboveIds, function(resp) {
+            requestLock = false;
+            if (resp && resp.success) {
+                reloadItems();
+            } else {
+                console.warn('Mark above as read failed!');
+            }
+        });
     }
 }
