@@ -7,6 +7,7 @@ Page {
     id: page
 
     property var item
+    property int currentIdx: -1
 
     function updateTagUnread(item, delta) {
         if (item && item.tags && typeof(delta) === 'number') {
@@ -234,10 +235,12 @@ Page {
     }
 
     Component.onCompleted: {
-        if (item.unread === "1") {
+        if (!settings.debug && item.unread === "1") {
             Selfoss.toggleStat('read', item.id, function(resp) {
                 if (resp.success) {
                     item.unread = "0";
+                    var listItem = currentModel.get(currentIdx);
+                    if (listItem) listItem.unread = "0";
                     statsUnread -= 1;
                     updateTagUnread(item, -1);
                 }

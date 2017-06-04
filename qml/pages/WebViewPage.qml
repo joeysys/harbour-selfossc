@@ -8,11 +8,9 @@ Page {
 
     property var item
 
-    property int fontSize: 28
-    property string fontColor: "#000000"
-    property string backgroundColor: "#ffffff"
-
-    allowedOrientations: Orientation.All
+    property int fontSize: settings.wvFontSize || 28
+    property string fontColor: settings.wvFontColor || "#000000"
+    property string backgroundColor: settings.wvBgColor || "#ffffff"
 
     SilicaWebView {
         id: webView
@@ -64,7 +62,7 @@ Page {
         }
 
         Component.onCompleted: {
-            loadHtml(generateHtml())
+            if (settings.debug) console.log('web view ready')
         }
     }
 
@@ -90,4 +88,13 @@ Page {
     function isBlank() {
         return '' + webView.url === 'about:blank'
     }
+
+    onStatusChanged: {
+        if (status === PageStatus.Active) {
+            if (settings.debug) console.log('start loading')
+            webView.loadHtml(generateHtml())
+            if (settings.debug) console.log('end loading')
+        }
+    }
+
 }

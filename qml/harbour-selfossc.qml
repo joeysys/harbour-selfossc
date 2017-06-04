@@ -76,6 +76,9 @@ ApplicationWindow
         _settings.debug = Storage.readSetting('debug');
         _settings.showThumbs = Storage.readSetting('thumb');
         _settings.noScaling = Storage.readSetting('noScaling');
+        _settings.wvFontSize = Storage.readSetting('wvFontSize');
+        _settings.wvFontColor = Storage.readSetting('wvFontColor');
+        _settings.wvBgColor = Storage.readSetting('wvBgColor');
         return _settings;
     }
 }
