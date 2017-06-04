@@ -229,7 +229,7 @@ Page {
 
     onStatusChanged: {
         if (status === PageStatus.Active) {
-            pageStack.pushAttached('WebViewPage.qml', {'initUrl': item.link})
+            pageStack.pushAttached('WebViewPage.qml', {'item': item})
         }
     }
 

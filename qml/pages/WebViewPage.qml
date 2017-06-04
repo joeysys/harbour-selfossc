@@ -1,22 +1,45 @@
 import QtQuick 2.2
 import Sailfish.Silica 1.0
 
+import '../js/selfoss.js' as Selfoss
 
 Page {
-    property string initUrl: "http://selfoss.aditu.de/"
+    id: detailsWebPage
+
+    property var item
+
+    property int fontSize: 28
+    property string fontColor: "#000000"
+    property string backgroundColor: "#ffffff"
+
+    allowedOrientations: Orientation.All
 
     SilicaWebView {
         id: webView
 
-        header: PageHeader {
-            title: webView.title
-        }
+        anchors.fill: parent
 
         PullDownMenu {
             MenuItem {
+                text: qsTr("Back")
+                onClicked: {
+                    if (webView.canGoBack) {
+                        webView.goBack()
+                    } else if (isBlank()) {
+                        pageStack.popAttached()
+                    } else {
+                        webView.loadHtml(generateHtml())
+                    }
+                }
+            }
+            MenuItem {
                 text: webView.loading ? qsTr("Stop") : qsTr("Reload")
                 onClicked: {
-                    webView.loading ? webView.stop() : webView.reload()
+                    if (!webView.loading && isBlank()) {
+                        webView.url = item.link
+                    } else {
+                        webView.loading ? webView.stop() : webView.reload()
+                    }
                 }
             }
         }
@@ -25,25 +48,46 @@ Page {
             MenuItem {
                 text: qsTr("Open in Browser")
                 onClicked: {
-                    Qt.openUrlExternally(initUrl);
+                    if (isBlank()) {
+                        Qt.openUrlExternally(item.link);
+                    } else {
+                        Qt.openUrlExternally(webView.url);
+                    }
                 }
             }
         }
-
-        anchors.fill: parent
-        //experimental.userAgent: "Mozilla/5.0 (Maemo; Linux; U; Jolla; Sailfish; Mobile; rv:31.0) Gecko/31.0 Firefox/31.0 SailfishBrowser/1.0"
-        experimental.userAgent: "Mozilla/5.0 (Maemo; Linux; U; Jolla; Sailfish; Mobile; rv:31.0) AppleWebKit/537.36 (KHTML, like Gecko)"
 
         BusyIndicator {
             size: BusyIndicatorSize.Large
             anchors.centerIn: parent
             running: webView.loading
         }
+
+        Component.onCompleted: {
+            loadHtml(generateHtml())
+        }
     }
 
-    onStatusChanged: {
-        if (status === PageStatus.Active) {
-            webView.url = initUrl;
-        }
+    function generateHtml() {
+        return  '<html lang="en">' +
+                '<head>' +
+                '  <meta charset="UTF-8">' +
+                '  <title></title>' +
+                '  <style>' +
+                '    body { color: ' + fontColor + '; background-color: ' + backgroundColor + '; }' +
+                '    h1 { font-size: ' + fontSize * 1.2 + 'px; }' +
+                '    article { word-wrap:break-word; font-size: ' + fontSize + 'px; }' +
+                '    img { max-width: 100%; }' +
+                '  </style>' +
+                '</head>' +
+                '<body>' +
+                '  <h1>' + item.title + '</h1>' +
+                '  <article>' + Selfoss.decodeCharCode(item.content.replace(/ target=\"_blank\" /g, ' ')) + '</article>' +
+                '</body>' +
+                '</html>'
+    }
+
+    function isBlank() {
+        return '' + webView.url === 'about:blank'
     }
 }

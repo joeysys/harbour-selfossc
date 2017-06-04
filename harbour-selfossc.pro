@@ -17,13 +17,7 @@ CONFIG += sailfishapp
 SOURCES += src/harbour-selfossc.cpp
 
 OTHER_FILES += qml/harbour-selfossc.qml \
-    qml/pages/DetailsPage.qml \
-    qml/pages/FilterDialog.qml \
-    qml/pages/MainPage.qml \
-    qml/pages/SettingsPage.qml \
-    qml/pages/WebViewPage.qml \
-    qml/pages/ListItemComponent.qml \
-    qml/pages/ThumbnailComponent.qml \
+    qml/pages/*.qml \
     qml/cover/CoverPage.qml \
     qml/js/selfoss.js \
     qml/js/storage.js \
