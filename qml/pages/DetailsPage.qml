@@ -9,6 +9,9 @@ Page {
     property var item
     property int currentIdx: -1
 
+    property bool isRead: false
+    property bool isStarred: false
+
     function updateTagUnread(item, delta) {
         if (item && item.tags && typeof(delta) === 'number') {
             var tags = item.tags.split(',');
@@ -28,6 +31,44 @@ Page {
         }
     }
 
+    function toggleRead(stat, itemId) {
+        Selfoss.toggleStat(stat, itemId, function(resp) {
+            if (resp.success) {
+                var listItem = currentIdx >= 0 ? currentModel.get(currentIdx) : null;
+                if (stat === "unread") {
+                    item.unread = "1";
+                    isRead = false;
+                    statsUnread += 1;
+                    updateTagUnread(item, 1);
+                    if (listItem) listItem.unread = "1";
+                } else {
+                    item.unread = "0";
+                    isRead = true;
+                    if (statsUnread > 0) statsUnread -= 1;
+                    updateTagUnread(item, -1);
+                    if (listItem) listItem.unread = "0";
+                }
+            }
+        });
+    }
+
+    function toggleStarr(stat, itemId) {
+        Selfoss.toggleStat(stat, item.id, function(resp) {
+            if (resp.success) {
+                var listItem = currentIdx >= 0 ? currentModel.get(currentIdx) : null;
+                if (stat === 'starr') {
+                    item.starred = "1";
+                    if (listItem) listItem.starred = "1";
+                    isStarred = true;
+                } else {
+                    item.starred = "0";
+                    if (listItem) listItem.starred = "0";
+                    isStarred = false;
+                }
+            }
+        });
+    }
+
     SilicaFlickable {
         anchors.fill: parent
         contentHeight: pageHeader.height + column.height + Theme.paddingLarge
@@ -38,31 +79,17 @@ Page {
             //    text: qsTr("Share")
             //}
             MenuItem {
-                text: item.unread === "0" ? qsTr("Mark as unread") : qsTr("Mark as read")
+                text: isRead ? qsTr("Mark as unread") : qsTr("Mark as read")
                 onClicked: {
-                    var stat = (item.unread === "0") ? 'unread' : 'read';
-                    Selfoss.toggleStat(stat, item.id, function(resp) {
-                        if (resp.success) {
-                            if (item.unread === "0") {
-                                item.unread = "1";
-                                statsUnread += 1;
-                                updateTagUnread(item, 1);
-                            } else {
-                                item.unread = "0";
-                                statsUnread -= 1;
-                                updateTagUnread(item, -1);
-                            }
-                        }
-                    });
+                    var stat = isRead ? 'unread' : 'read';
+                    toggleRead(stat, item.id);
                 }
             }
             MenuItem {
-                text: item.starred === "0" ? qsTr("Star") : qsTr("Unstar")
+                text: isStarred ? qsTr("Unstar") : qsTr("Star")
                 onClicked: {
-                    var stat = (item.starred === "0") ? 'starr' : 'unstarr';
-                    Selfoss.toggleStat(stat, item.id, function(resp) {
-                        if (resp.success) item.starred = (item.starred === "0" ? "1" : "0")
-                    });
+                    var stat = isStarred ? 'unstarr' : 'starr';
+                    toggleStarr(stat, item.id)
                 }
             }
         }
@@ -235,16 +262,10 @@ Page {
     }
 
     Component.onCompleted: {
-        if (!settings.debug && item.unread === "1") {
-            Selfoss.toggleStat('read', item.id, function(resp) {
-                if (resp.success) {
-                    item.unread = "0";
-                    var listItem = currentModel.get(currentIdx);
-                    if (listItem) listItem.unread = "0";
-                    statsUnread -= 1;
-                    updateTagUnread(item, -1);
-                }
-            });
+        isRead = item.unread === "0"
+        isStarred = item.starred === "1"
+        if (!settings.debug && !isRead) {
+            toggleRead('read', item.id)
         }
         if (item.thumbnail) {
             thumbLoader.setSource('ThumbnailComponent.qml', {

@@ -142,7 +142,7 @@ ListItem {
 
     onClicked: {
         currentItem = JSON.parse(JSON.stringify(item));
-        pageStack.push('DetailsPage.qml', {'item': currentItem, 'currentIndex': index})
+        pageStack.push('DetailsPage.qml', {'item': currentItem, 'currentIdx': index})
     }
 
     //Component.onCompleted: setThumbSource()
