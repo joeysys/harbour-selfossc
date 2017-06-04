@@ -31,7 +31,8 @@ ListItem {
             text: qsTr("Open in Browser")
             onClicked: {
                 Qt.openUrlExternally(link);
-                toggleRead('read');
+                if (item.unread === '1')
+                    toggleRead('read');
             }
         }
     }
@@ -140,7 +141,8 @@ ListItem {
     }
 
     onClicked: {
-        pageStack.push('DetailsPage.qml', {'item': currentModel.get(index)})
+        currentItem = JSON.parse(JSON.stringify(item));
+        pageStack.push('DetailsPage.qml', {'item': currentItem})
     }
 
     //Component.onCompleted: setThumbSource()
@@ -173,7 +175,8 @@ ListItem {
             if (resp.success) {
                 if (stat === 'read') {
                     item.unread = '0';
-                    statsUnread -= 1;
+                    if (statsUnread > 0)
+                        statsUnread -= 1;
                 } else {
                     item.unread = '1';
                     statsUnread += 1;

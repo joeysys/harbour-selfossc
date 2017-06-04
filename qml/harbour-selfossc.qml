@@ -18,6 +18,7 @@ ApplicationWindow
     property int sourceIndex: 0
     property int statsUnread: 0
     property var currentModel
+    property var currentItem
     property var exportFns
     property var tagList: []
 
