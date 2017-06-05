@@ -105,7 +105,7 @@ Page {
 
         PageHeader {
             id: pageHeader
-            title: item.tags
+            title: (isStarred ? '★ ' : '☆ ') + item.tags
         }
 
         Item {
