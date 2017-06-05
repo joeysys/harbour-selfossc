@@ -41,17 +41,7 @@ ApplicationWindow
 
 
     function updateStats() {
-        Selfoss.listTags(function(tags) {
-            if (settings.debug) console.log('add tags', tags.length);
-            tagList = tags;
-            var orderedTags = tags.slice().sort(function(a, b) {
-                return b.unread - a.unread;
-            });
-            tagsModel.clear();
-            for (var i in orderedTags) {
-                tagsModel.append(orderedTags[i]);
-            }
-        });
+        updateTags();
         Selfoss.listSources(function(srcs) {
             if (settings.debug) console.log('add srcs', srcs.length);
             sources = srcs;
@@ -63,6 +53,20 @@ ApplicationWindow
         Selfoss.getStats(function(resp) {
             if (settings.debug) console.log(JSON.stringify(resp));
             statsUnread = resp.unread - 0;
+        });
+    }
+
+    function updateTags() {
+        Selfoss.listTags(function(tags) {
+            if (settings.debug) console.log('add tags', tags.length);
+            tagList = tags;
+            var orderedTags = tags.slice().sort(function(a, b) {
+                return b.unread - a.unread;
+            });
+            tagsModel.clear();
+            for (var i in orderedTags) {
+                tagsModel.append(orderedTags[i]);
+            }
         });
     }
 

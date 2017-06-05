@@ -66,7 +66,7 @@ Dialog {
             ComboBox {
                 id: tagsCombo
                 width: parent.width
-                label: qsTr("Tags")
+                label: qsTr("Tag")
                 currentIndex: tagIndex
                 menu: ContextMenu {
                     MenuItem { text: qsTr("All") }
@@ -74,18 +74,19 @@ Dialog {
                         id: tagsRepeater
                         model: tagList
                         delegate: MenuItem {
-                            text: modelData.tag
+                            text: modelData.tag + ' (' + modelData.unread + ')'
                         }
                     }
                 }
                 onValueChanged: {
                     if (settings.debug) console.log('tag changed', currentIndex, value)
+                    var tagname = getCleanTag();
                     // FIXME
                     // This will reset sourceCombs* index to 0
                     // How to set these to sourceIndex?
                     sourceModel.clear();
                     for (var i=0; i<sources.length; i++) {
-                        if (currentIndex === 0 || sources[i].tags.split(',').indexOf(value) >= 0) {
+                        if (currentIndex === 0 || sources[i].tags.split(',').indexOf(tagname) >= 0) {
                             sourceModel.append(sources[i]);
                         }
                     }
@@ -137,6 +138,12 @@ Dialog {
         }
     }
 
+    onStatusChanged: {
+        if (status === PageStatus.Activating) {
+            updateTags();
+        }
+    }
+
     onAccepted: {
         if (sourceModel.count > 6) {
             if (settings.debug) console.log('src index 1:', sourceCombo1.currentIndex, sourceIndex);
@@ -148,7 +155,7 @@ Dialog {
             if (sourceCombo1.currentIndex > 0) {
                 subtitle = sourceCombo1.value;
             } else {
-                subtitle = tagsCombo.value;
+                subtitle = getCleanTag();
             }
         } else {
             if (settings.debug) console.log('src index 2:', sourceCombo2.currentIndex, sourceIndex);
@@ -160,7 +167,7 @@ Dialog {
             if (sourceCombo2.currentIndex > 0) {
                 subtitle = sourceCombo2.value;
             } else {
-                subtitle = tagsCombo.value;
+                subtitle = getCleanTag();
             }
         }
         if (settings.debug) console.log('Tag index:', tagsCombo.currentIndex, tagIndex)
@@ -194,6 +201,15 @@ Dialog {
             pageStack.previousPage().reloadItems();
         }
         pageStack.popAttached();
+    }
+
+    function getCleanTag() {
+        var tagname = tagsCombo.value;
+        var endIdx = tagsCombo.value.lastIndexOf(' (');
+        if (endIdx >= 0) {
+            tagname = tagsCombo.value.substring(0, endIdx);
+        }
+        return tagname;
     }
 }
 
