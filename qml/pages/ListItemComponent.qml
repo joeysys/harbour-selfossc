@@ -52,7 +52,7 @@ ListItem {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.topMargin: Theme.paddingSmall
-            source: Selfoss.site + '/favicons/' + icon
+            source: icon ? (Selfoss.site + '/favicons/' + icon) : "image://theme/icon-cover-people"
         }
         Image {
             id: thumbIcon
@@ -72,7 +72,7 @@ ListItem {
             anchors.topMargin: Theme.paddingSmall / 2
             width: parent.width - itemIcon.width - thumbIcon.width - Theme.paddingMedium
             height: Theme.fontSizeSmall
-            text: author
+            text: author ? author : qsTr("Unknown")
             color: {
                 switch (unread + starred) {
                     case "00":

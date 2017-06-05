@@ -132,7 +132,7 @@ Page {
                         left: parent.left
                         topMargin: Theme.paddingSmall
                     }
-                    source: Selfoss.site + '/favicons/' + item.icon
+                    source: item.icon ? (Selfoss.site + '/favicons/' + item.icon) : "image://theme/icon-cover-people"
                 }
 
                 Label {
@@ -144,7 +144,7 @@ Page {
                         left: itemIcon.right
                         leftMargin: Theme.paddingSmall
                     }
-                    text: item.author
+                    text: item.author ? item.author : qsTr("Unknown")
                     elide: TruncationMode.Elide
                     font.pixelSize: Theme.fontSizeSmall
                     color: Theme.secondaryHighlightColor
