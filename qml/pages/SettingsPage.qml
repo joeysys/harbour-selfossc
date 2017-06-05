@@ -20,6 +20,8 @@ Page {
     property string wvFontColor: "black"
     property string wvBgColor: "white"
 
+    property int clickCount: 0
+
     function readSettings() {
         var settings = Storage.readAllSettings();
         site = settings['site'] || site
@@ -148,7 +150,7 @@ Page {
                 id: debugSwitch
                 text: qsTr("Enable debugging")
                 checked: _debug
-                visible: true
+                visible: _debug
             }
 
             SectionHeader {
@@ -181,7 +183,21 @@ Page {
             }
 
             SectionHeader {
-                text: qsTr("Version 0.4.0")
+                text: qsTr("Version")
+            }
+
+            BackgroundItem {
+                Label {
+                    width: parent.width - Theme.paddingLarge * 2
+                    anchors.centerIn: parent
+                    text: "0.4.0"
+                }
+                onClicked: {
+                    clickCount += 1
+                    if (clickCount > 9) {
+                        debugSwitch.visible = true;
+                    }
+                }
             }
 
         }
