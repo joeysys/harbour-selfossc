@@ -7,6 +7,7 @@ Page {
     id: detailsWebPage
 
     property var item
+    property string initUrl: "http://selfoss.aditu.de/"
 
     property int fontSize: settings.wvFontSize || 28
     property string fontColor: settings.wvFontColor || "#000000"
@@ -16,7 +17,16 @@ Page {
         id: webView
 
         anchors.fill: parent
-        experimental.userAgent: "Mozilla/5.0 (Maemo; Linux; U; Sailfish; Mobile; rv:38.0) Gecko/38.0 Firefox/38.0 SailfishBrowser/1.0"
+
+        experimental {
+            userAgent: "Mozilla/5.0 (Maemo; Linux; U; Sailfish; Mobile; rv:38.0)  AppleWebKit/538.1 (KHTML, like Gecko)"
+            transparentBackground: false
+            //userStyleSheets: "../css/webview.css"
+            //customLayoutWidth: 280
+            preferences {
+                defaultFontSize: fontSize
+            }
+        }
 
         PullDownMenu {
             MenuItem {
@@ -26,15 +36,17 @@ Page {
                         webView.goBack()
                     } else if (isBlank()) {
                         pageStack.popAttached()
-                    } else {
+                    } else if (item) {
                         webView.loadHtml(generateHtml())
+                    } else {
+                        webView.url = initUrl
                     }
                 }
             }
             MenuItem {
                 text: webView.loading ? qsTr("Stop") : qsTr("Reload")
                 onClicked: {
-                    if (!webView.loading && isBlank()) {
+                    if (!webView.loading && isBlank() && item) {
                         webView.url = item.link
                     } else {
                         webView.loading ? webView.stop() : webView.reload()
@@ -47,7 +59,7 @@ Page {
             MenuItem {
                 text: qsTr("Open in Browser")
                 onClicked: {
-                    if (isBlank()) {
+                    if (isBlank() && item) {
                         Qt.openUrlExternally(item.link);
                     } else {
                         Qt.openUrlExternally(webView.url);
@@ -68,20 +80,29 @@ Page {
     }
 
     function generateHtml() {
+        var title = item.title.replace(/ target=\"_blank\"/g, ' ')
+        var content = '<p style="text-align: right; font-size: 16px; color: gray;">' + qsTr("Reload to view original web page") + '</p>'
+        if (item.content) {
+            content = Selfoss.decodeCharCode(item.content.replace(/ target=\"_blank\"/g, ' '))
+        }
+        if (item.thumbnail) {
+            content = '<p style="text-align: center;"><img src="' + Selfoss.site + '/thumbnails/' + item.thumbnail + '"></p>' + content
+        }
+
         return  '<html lang="en">' +
                 '<head>' +
                 '  <meta charset="UTF-8">' +
                 '  <title></title>' +
                 '  <style>' +
                 '    body { color: ' + fontColor + '; background-color: ' + backgroundColor + '; }' +
-                '    h1 { font-size: ' + fontSize * 1.2 + 'px; }' +
+                '    h1 { font-size: ' + fontSize * 1.2 + 'px; margin-top: 36px; }' +
                 '    article { word-wrap:break-word; font-size: ' + fontSize + 'px; }' +
                 '    img { max-width: 100%; }' +
                 '  </style>' +
                 '</head>' +
                 '<body>' +
-                '  <h1>' + item.title + '</h1>' +
-                '  <article>' + Selfoss.decodeCharCode(item.content.replace(/ target=\"_blank\" /g, ' ')) + '</article>' +
+                '  <h1>　' + title + '</h1>' +
+                '  <article>' + content + '</article>' +
                 '</body>' +
                 '</html>'
     }
@@ -92,9 +113,11 @@ Page {
 
     onStatusChanged: {
         if (status === PageStatus.Active) {
-            if (settings.debug) console.log('start loading')
-            webView.loadHtml(generateHtml())
-            if (settings.debug) console.log('end loading')
+            if (item) {
+                webView.loadHtml(generateHtml())
+            } else {
+                webView.url = initUrl
+            }
         }
     }
 

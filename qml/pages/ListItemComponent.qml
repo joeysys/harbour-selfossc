@@ -142,7 +142,11 @@ ListItem {
 
     onClicked: {
         currentItem = JSON.parse(JSON.stringify(item));
-        pageStack.push('DetailsPage.qml', {'item': currentItem, 'currentIdx': index})
+        if (!item.content && !thumbnail) {
+            pageStack.push('WebViewPage.qml', {'item': currentItem})
+        } else {
+            pageStack.push('DetailsPage.qml', {'item': currentItem, 'currentIdx': index})
+        }
     }
 
     //Component.onCompleted: setThumbSource()

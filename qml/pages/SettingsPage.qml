@@ -32,7 +32,6 @@ Page {
         wvFontSize = settings['wvFontSize'] || wvFontSize
         wvFontColor = settings['wvFontColor'] || wvFontColor
         wvBgColor = settings['wvBgColor'] || wvBgColor
-        console.log ("read debug:", settings['debug'])
     }
 
     function saveSettings() {
@@ -60,9 +59,7 @@ Page {
         if (scalingSwitch.checked == _noScaling) {
             Storage.writeSetting('noScaling', !scalingSwitch.checked);
         }
-        console.log (debugSwitch.checked, _debug)
         if (debugSwitch.checked !== _debug) {
-            console.log ("writing debug:", debugSwitch.checked)
             Storage.writeSetting('debug', debugSwitch.checked);
         }
 
