@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Tue Jun 06 2017 Joey Syou <joey@cirnoq.xyz> 0.4.0-1
+- Update WebView and bug fix
+
 * Tue Jun 21 2016 Joey Syou <joey@cirnoq.xyz> 0.3.0-1
 - Some improvements and bug fixes
 
