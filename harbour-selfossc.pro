@@ -14,7 +14,8 @@ TARGET = harbour-selfossc
 
 CONFIG += sailfishapp
 
-SOURCES += src/harbour-selfossc.cpp
+SOURCES += src/harbour-selfossc.cpp \
+    src/customnetworkaccessmanager.cpp
 
 OTHER_FILES += qml/harbour-selfossc.qml \
     qml/pages/*.qml \
@@ -35,3 +36,6 @@ CONFIG += sailfishapp_i18n
 
 DISTFILES += \
     qml/img/logo.png
+
+HEADERS += \
+    src/customnetworkaccessmanager.h

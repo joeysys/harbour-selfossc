@@ -83,6 +83,13 @@ Page {
         contentHeight: settingsColumn.height + Theme.paddingLarge
         anchors.fill: parent
 
+        PushUpMenu {
+            MenuItem {
+                text: qsTr("Clear cache")
+                onClicked: networkManager.clearCache()
+            }
+        }
+
         Column {
             id: settingsColumn
             width: parent.width
@@ -190,7 +197,7 @@ Page {
                 Label {
                     width: parent.width - Theme.paddingLarge * 2
                     anchors.centerIn: parent
-                    text: "0.4.0"
+                    text: appVersion
                 }
                 onClicked: {
                     clickCount += 1
