@@ -119,6 +119,10 @@ function decodeCharCode(str) {
         });
 }
 
+function removeTitleImage(titleText) {
+    return titleText.replace(/<a href="https:\/\/twitter.com\/\w+\/status\/\d+\/photo\/.*pic.twitter.com\/\w+<\/a>/, '')
+}
+
 function changeZone(time, shorter) {
     var date = new Date(time);
     var offset = timezone + date.getTimezoneOffset() / 60;

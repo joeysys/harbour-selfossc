@@ -83,8 +83,7 @@ Page {
                 item.title = item.title.substr(de+7);
                 // Remove preview link in title
                 if (item.thumbnail) {
-                    var _idx = item.title.lastIndexOf(' <a href="https://t.co');
-                    item.title = item.title.substr(0, _idx); // no content => -1
+                    item.title = Selfoss.removeTitleImage(item.title)
                 }
             }
 
