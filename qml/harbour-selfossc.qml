@@ -7,7 +7,7 @@ import "js/storage.js" as Storage
 
 ApplicationWindow
 {
-    property string appVersion: "0.4.1"
+    property string appVersion: "0.4.2"
     property bool requestLock: false
     property bool forceReload: false
     property int pageItems: 20

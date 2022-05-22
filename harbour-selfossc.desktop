@@ -4,3 +4,7 @@ X-Nemo-Application-Type=silica-qt5
 Icon=harbour-selfossc
 Exec=harbour-selfossc
 Name=Selfoss
+
+[X-Sailjail]
+Permissions=Internet;WebView
+ApplicationName=harbour-selfossc
