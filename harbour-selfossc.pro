@@ -39,3 +39,5 @@ DISTFILES += \
 
 HEADERS += \
     src/customnetworkaccessmanager.h
+
+TRANSLATIONS += translations/harbour-selfossc-*.ts
